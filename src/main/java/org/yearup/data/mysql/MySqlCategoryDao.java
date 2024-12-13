@@ -33,46 +33,43 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                int category_id = resultSet.getInt("category_id");
+                int categoryId = resultSet.getInt("category_id");
                 String categoryName = resultSet.getString("name");
                 String description = resultSet.getString("description");
-                Category category = new Category(category_id,categoryName,description);
+
+                Category category = new Category(categoryId, categoryName, description);
                 categories.add(category);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error retrieving categories", e);
         }
+
         return categories;
     }
+
 
     @Override
     public Category getById(int categoryId)
     {
-        List<Category> categories = new ArrayList<>();
+        String sql = "SELECT * FROM categories WHERE category_id = ?";
 
-        String sql = "SELECT * FROM categories " +
-                " WHERE category_id = ? ";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
-        try (Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, categoryId);
 
-            ResultSet row = statement.executeQuery();
-
-            while (row.next())
-            {
-                Category category = mapRow(row);
-                categories.add(category);
+            try (ResultSet row = statement.executeQuery()) {
+                if (row.next()) {
+                    return mapRow(row); // mapping and returning one category
+                }
             }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving category with ID " + categoryId, e);
         }
-        catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-        return categories;
+        
+        return null;
     }
+
 
     @Override
     public Category create(Category category)
