@@ -26,24 +26,20 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public List<Category> getAllCategories()
     {
         List<Category> categories = new ArrayList<>();
-        String sql = "SELECT category_id, name, description FROM categories";
+        String sql = "SELECT * FROM categories";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                int categoryId = resultSet.getInt("category_id");
-                String categoryName = resultSet.getString("name");
-                String description = resultSet.getString("description");
 
-                Category category = new Category(categoryId, categoryName, description);
+                Category category = mapRow(resultSet);
                 categories.add(category);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving categories", e);
         }
-
         return categories;
     }
 
