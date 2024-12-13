@@ -29,9 +29,9 @@ public class CategoriesController
 
     @GetMapping("")
     @PreAuthorize("permitAll()")
-    public List<Category> getAll()
+    public List<Category> getAll(@RequestParam(name="name", required = false) String name,
+                                 @RequestParam(name="description", required = false) String description)
     {
-        {
             try
             {
                 return categoryDao.getAllCategories();
@@ -41,13 +41,26 @@ public class CategoriesController
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
             }
     }
+    
+        @GetMapping("{id}")
+        @PreAuthorize("permitAll()")
+        public Category getById(@PathVariable int id)
+        {
+            try
+            {
+                Category category = categoryDao.getById(id);
 
-    // add the appropriate annotation for a get action
-    public Category getById(@PathVariable int id)
-    {
-        // get the category by id
-        return null;
-    }
+                if (category == null)
+                {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
+                }
+                return category;
+            }
+            catch (Exception ex)
+            {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+            }
+        }
 
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
