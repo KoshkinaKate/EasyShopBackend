@@ -84,7 +84,7 @@ public class ProductsController
     {
         try
         {
-            productDao.update(id, product);
+            productDao.update(id, product); //fixed, was calling another method
         }
         catch(Exception ex)
         {
