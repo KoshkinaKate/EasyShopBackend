@@ -77,7 +77,7 @@ public class CategoriesController
         }
     }
 
-    @PostMapping("")
+    @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Category addCategory(@RequestBody Category category)
     {
