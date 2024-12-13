@@ -3,8 +3,8 @@ package org.yearup.controllers;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.yearup.data.CategoryDao;
-import org.yearup.data.ProductDao;
+import org.yearup.data.interfaces.CategoryDao;
+import org.yearup.data.interfaces.ProductDao;
 import org.yearup.models.Category;
 import org.yearup.models.Product;
 

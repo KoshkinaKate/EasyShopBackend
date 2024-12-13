@@ -2,7 +2,7 @@ package org.yearup.data.mysql;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.yearup.data.UserDao;
+import org.yearup.data.interfaces.UserDao;
 import org.yearup.models.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

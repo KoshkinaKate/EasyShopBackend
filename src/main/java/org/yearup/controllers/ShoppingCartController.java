@@ -2,9 +2,9 @@ package org.yearup.controllers; //optional
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-import org.yearup.data.ProductDao;
-import org.yearup.data.ShoppingCartDao;
-import org.yearup.data.UserDao;
+import org.yearup.data.interfaces.ProductDao;
+import org.yearup.data.interfaces.ShoppingCartDao;
+import org.yearup.data.interfaces.UserDao;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.User;
 
