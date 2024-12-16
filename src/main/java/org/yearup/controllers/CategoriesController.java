@@ -29,8 +29,7 @@ public class CategoriesController
 
     @GetMapping("")
     @PreAuthorize("permitAll()")
-    public List<Category> getAll(@RequestParam(name="name", required = false) String name,
-                                 @RequestParam(name="description", required = false) String description)
+    public List<Category> getAll()
     {
             try
             {
