@@ -42,25 +42,27 @@ public class CategoriesController
             }
     }
 
-        @GetMapping("{id}")
-        @PreAuthorize("permitAll()")
-        public Category getById(@PathVariable int id)
+    @GetMapping("{id}")
+    @PreAuthorize("permitAll()")
+    public Category getById(@PathVariable int id )
+    {
+        Category category = null;
+        try
         {
-            try
-            {
-                Category category = categoryDao.getById(id);
-
-                if (category == null)
-                {
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
-                }
-                return category;
-            }
-            catch (Exception ex)
-            {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
-            }
+            category = categoryDao.getById(id);
         }
+        catch(Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+
+        if(category == null)
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return category;
+    }
 
 
     @GetMapping("{categoryId}/products")
@@ -79,6 +81,7 @@ public class CategoriesController
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     public Category addCategory(@RequestBody Category category)
     {
         try
@@ -107,6 +110,7 @@ public class CategoriesController
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable int id)
     {
         try
