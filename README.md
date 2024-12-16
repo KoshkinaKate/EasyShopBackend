@@ -1,16 +1,19 @@
-# Project Title
+# EASY SHOP
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
+The Easy Shop Application is a Java-based REST API designed to manage product categories and products for an e-commerce platform. It provides functionality for administrators to manage categories (add, update, delete) and for users to view available categories and products. The application ensures secure role-based access control, where only administrators can perform sensitive operations, while all users can access general data like categories and products.
+
+This project aims to streamline product and category management, providing a clean and efficient API structure for future integration with frontend applications.
 
 
 ## User Stories
 
 List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
 
-- As a user, I want to be able to input my data, so that the application can process it accordingly.
-- As a user, I want to receive immediate feedback, so I can understand what to do next.
+- *As an admin*, I want to add new categories, so that products can be grouped under relevant categories.
+- *As an admin*, I want to update existing categories, so that the category information stays relevant and up-to-date.
+- *As a user*, I want to view all available product categories, so that I can explore products under those categories.
 
 ## Setup
 
@@ -34,20 +37,29 @@ Follow these steps to get your application running within IntelliJ IDEA:
 ## Technologies Used
 
 - Java: Mention the version you are using.
-- Any additional libraries or frameworks used in the project.
+- MySQL: Relational database for data storage.
+- Spring Boot: Framework for building REST APIs.
+- Postman: API testing tool to verify all endpoints.
+
+
+## Challenges Faced
+###  1. HTTP Status Code Issues:
+Initially, the POST method for adding a new category returned a default 200 OK. We resolved this by adding the @ResponseStatus(HttpStatus.CREATED) annotation to ensure compliance with RESTful standards and return 201 Created when a new resource is added.
+### 2. Error Handling:
+Implementing proper error handling was crucial. We used ResponseStatusException to return consistent and meaningful HTTP responses like 404 Not Found for missing resources and 500 Internal Server Error for unexpected failures.
 
 ## Demo
 
-Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
+### *Postman Run Result* 
 
-![Application Screenshot](path/to/your/screenshot.png)
+![PostmanResults.png](imgs/PostmanResults.png)
 
 ## Future Work
 
 Outline potential future enhancements or functionalities you might consider adding:
 
-- Additional feature to be developed.
-- Improvement of current functionalities.
+- Integrate a frontend client for better user interaction.
+
 
 ## Resources
 
@@ -55,15 +67,8 @@ List resources such as tutorials, articles, or documentation that helped you dur
 
 - [Java Programming Tutorial](https://www.example.com)
 - [Effective Java](https://www.example.com)
-
-## Team Members
-
-- **Name 1** - Specific contributions or roles.
-- **Name 2** - Specific contributions or roles.
-
 ## Thanks
 
 Express gratitude towards those who provided help, guidance, or resources:
 
-- Thank you to [Mentor's Name] for continuous support and guidance.
-- A special thanks to all teammates for their dedication and teamwork.
+- Thank you to Raymond for continuous support and guidance.
