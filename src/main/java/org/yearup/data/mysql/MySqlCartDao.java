@@ -39,10 +39,57 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error fetching shopping cart for user: " + userId, e);
+            throw new RuntimeException(e);
         }
         return shoppingCart;
     }
+
+    @Override
+    public ShoppingCart addProductToCart(int userId, int productId, int quantity) {
+        String sql = "INSERT INTO shopping_cart (user_id, product_id, quantity) " +
+                "VALUES (?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE quantity = quantity + ?";
+
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+            statement.setInt(2, productId);
+            statement.setInt(3, quantity);
+            statement.setInt(4, quantity);
+
+            int rows = statement.executeUpdate();
+            if (rows == 0) {
+                throw new RuntimeException("Failed to add product to cart");
+            }
+
+            return getByUserId(userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ShoppingCart updateProductInCart(int userId, int productId, int quantity) {
+        String sql = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, quantity);
+            statement.setInt(2, userId);
+            statement.setInt(3, productId);
+
+            statement.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ShoppingCart removeItemsCart(int userId) {
+        return null;
+    }
+
     private ShoppingCartItem mapRow(ResultSet row) throws SQLException {
         int productId = row.getInt("product_id");
         int quantity = row.getInt("quantity");
