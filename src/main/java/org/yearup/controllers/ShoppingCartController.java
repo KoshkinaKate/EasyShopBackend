@@ -3,10 +3,7 @@ package org.yearup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.yearup.data.interfaces.ProductDao;
 import org.yearup.data.interfaces.ShoppingCartDao;
@@ -55,8 +52,27 @@ public class ShoppingCartController
         }
     }
 
-    // add a POST method to add a product to the cart - the url should be
-    // https://localhost:8080/cart/products/15 (15 is the productId to be added
+    // the url -https://localhost:8080/cart/products/15 (15 is the productId to be added
+    @PostMapping("/products/{productId}")
+    public void addProductToCart(@PathVariable int productId, Principal principal)
+    {
+        try
+        {
+            String username = principal.getName();
+            User user = userDao.getByUserName(username);
+
+            if (user == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+            }
+            //sets default to 1
+            shoppingCartDao.addProductToCart(user.getId(), productId, 1);
+        }
+        catch (Exception e)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to add product to cart.", e);
+        }
+    }
+
 
 
 
