@@ -9,8 +9,6 @@ This project aims to streamline product and category management, providing a cle
 
 ## User Stories
 
-List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
-
 - *As an admin*, I want to add new categories, so that products can be grouped under relevant categories.
 - *As an admin*, I want to update existing categories, so that the category information stays relevant and up-to-date.
 - *As a user*, I want to view all available product categories, so that I can explore products under those categories.
