@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+//spring managed bean
 @Component
 public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 {
@@ -20,12 +21,14 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         super(dataSource);
     }
 
+
     @Override
     public List<Category> getAllCategories()
     {
         List<Category> categories = new ArrayList<>();
         String sql = "SELECT * FROM categories";
 
+        //executing query
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
@@ -36,7 +39,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
                 categories.add(category);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving categories", e);
+            throw new RuntimeException(e);
         }
         return categories;
     }
@@ -58,7 +61,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving category with ID " + categoryId, e);
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -150,13 +153,6 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         String name = row.getString("name");
         String description = row.getString("description");
 
-        Category category = new Category()
-        {{
-            setCategoryId(categoryId);
-            setName(name);
-            setDescription(description);
-        }};
-
-        return category;
+        return new Category(categoryId, name, description);
     }
 }

@@ -21,7 +21,7 @@ public class CategoriesController
     private CategoryDao categoryDao;
     private ProductDao productDao;
 
-    @Autowired
+    @Autowired //injects below into the controller
     public CategoriesController(CategoryDao categoryDao, ProductDao productDao) {
         this.categoryDao = categoryDao;
         this.productDao = productDao;
@@ -37,7 +37,7 @@ public class CategoriesController
             }
             catch (Exception ex)
             {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");//500 error
             }
     }
 

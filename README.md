@@ -89,7 +89,7 @@ Implementing proper error handling was crucial. We used ResponseStatusException 
 
 - [Java Programming Tutorial](https://www.example.com)
 - [Effective Java](https://www.example.com)
-- 
+
 ## Thanks
 
 - Thank you to Raymond for continuous support and guidance.
