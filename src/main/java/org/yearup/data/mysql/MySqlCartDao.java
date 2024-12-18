@@ -48,8 +48,8 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
     public ShoppingCart addProductToCart(int userId, int productId, int quantity) {
         String sql = "INSERT INTO shopping_cart (user_id, product_id, quantity) " +
                 "VALUES (?, ?, ?) " +
-                "ON DUPLICATE KEY UPDATE quantity = quantity + ?";
-
+                "ON DUPLICATE KEY UPDATE quantity = quantity + ?"; //insures quantity is incremented by the specified value
+        // try with resources
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, userId);
@@ -113,9 +113,10 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
         int stock = row.getInt("stock");
         boolean featured = row.getBoolean("featured");
 
-        ShoppingCartItem item = new ShoppingCartItem();
+        ShoppingCartItem item = new ShoppingCartItem(); //represents a single product every time
+        //creates a new product and contains all data of the product
         item.setProduct(new Product(productId, name, price, categoryId, description, color, stock, featured, imageUrl));
-        item.setQuantity(quantity);
+        item.setQuantity(quantity); //sets quantity
 
         return item;
     }
