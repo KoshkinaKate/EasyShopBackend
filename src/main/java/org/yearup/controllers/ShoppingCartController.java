@@ -55,7 +55,7 @@ public class ShoppingCartController
 
     // the url -https://localhost:8080/cart/products/15 (15 is the productId to be added
     @PostMapping("/products/{productId}")
-    public void addProductToCart(@PathVariable int productId, Principal principal)
+    public ShoppingCart addProductToCart(@PathVariable int productId, Principal principal)
     {
         try
         {
@@ -67,9 +67,8 @@ public class ShoppingCartController
             }
             //sets default to 1
             shoppingCartDao.addProductToCart(user.getId(), productId, 1);
-        }
-        catch (Exception e)
-        {
+            return shoppingCartDao.getByUserId(user.getId());
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.", e);
         }
     }
@@ -79,7 +78,7 @@ public class ShoppingCartController
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
     @PutMapping("/products/{productId}")
-    public void updateCartItem(@PathVariable int productId, @RequestBody ShoppingCartItem updatedItem, Principal principal)
+    public ShoppingCart updateCartItem(@PathVariable int productId, @RequestBody ShoppingCartItem updatedItem, Principal principal)
     {
         try
         {
@@ -95,9 +94,8 @@ public class ShoppingCartController
             }
 
             shoppingCartDao.updateProductInCart(user.getId(), productId, updatedItem.getQuantity());
-        }
-        catch (Exception e)
-        {
+            return shoppingCartDao.getByUserId(user.getId());
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.", e);
         }
     }
@@ -107,7 +105,7 @@ public class ShoppingCartController
     // https://localhost:8080/cart
     @DeleteMapping("")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void clearCart(Principal principal)
+    public ShoppingCart clearCart(Principal principal)
     {
         try
         {
@@ -119,9 +117,8 @@ public class ShoppingCartController
             }
 
             shoppingCartDao.removeItemsCart(user.getId());
-        }
-        catch (Exception e)
-        {
+            return shoppingCartDao.getByUserId(user.getId());
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.", e);
         }
     }

@@ -69,7 +69,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
     }
 
     @Override
-    public void updateProductInCart(int userId, int productId, int quantity) {
+    public ShoppingCart updateProductInCart(int userId, int productId, int quantity) {
         String sql = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
 
         try (Connection connection = getConnection()) {
@@ -82,13 +82,14 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
             if (rows == 0) {
                 throw new RuntimeException("No cart item found for user");
             }
+            return getByUserId(userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void removeItemsCart(int userId) {
+    public ShoppingCart removeItemsCart(int userId) {
         String sql = "DELETE FROM shopping_cart WHERE user_id = ?";
 
         try (Connection connection = getConnection();
@@ -99,6 +100,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return new ShoppingCart();
     }
 
     private ShoppingCartItem mapRow(ResultSet row) throws SQLException {
