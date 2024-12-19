@@ -100,7 +100,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return new ShoppingCart();
+        return getByUserId(userId);
     }
 
     private ShoppingCartItem mapRow(ResultSet row) throws SQLException {
